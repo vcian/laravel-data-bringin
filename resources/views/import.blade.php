@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Import</title>
+    <title>Laravel - Data Bringin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -152,8 +152,8 @@
                 <div class="notes w-100 px-4 d-flex align-items-center
                       position-relative">
                     <p class="m-0"><span class="badge bg-success me-2
-                         text-uppercase">Note!</span>Please match column
-                        with the original form value.
+                         text-uppercase">Note!</span>Please match file column name
+                        with the original table column name.
                     </p>
                 </div>
                 <form method="get">
