@@ -36,5 +36,8 @@
                 "Vcian\\LaravelDataBringin\\Providers\\ImportServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "laravel/pint": "dev-main"
     }
 }
