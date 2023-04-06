@@ -22,10 +22,10 @@ class StoreImportRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'step' => 'integer|between:1,4|nullable'
+            'step' => 'integer|between:1,4|nullable',
         ];
 
-        if($this->step == 1) {
+        if ($this->step == 1) {
             $rules['file'] = 'required|file|mimes:csv,txt';
         }
 

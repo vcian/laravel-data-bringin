@@ -12,20 +12,14 @@ use Vcian\LaravelDataBringin\Services\ImportService;
 
 class ImportController extends Controller
 {
-    /**
-     * @param ImportService $importService
-     */
     public function __construct(
         private readonly ImportService $importService
-    ) {}
+    ) {
+    }
 
-    /**
-     * @param ImportRequest $request
-     * @return View|RedirectResponse
-     */
     public function index(ImportRequest $request): View|RedirectResponse
     {
-        if($request->step > session('import.step')) {
+        if ($request->step > session('import.step')) {
             return to_route('data_bringin.index');
         }
         $data = [];
@@ -37,16 +31,13 @@ class ImportController extends Controller
         $data['fileColumns'] = collect(session('import.fileColumns'));
         $data['fileData'] = collect(session('import.data'));
         $data['result'] = collect(session('import.result'));
+
         return view('data-bringin::import', $data);
     }
 
-    /**
-     * @param StoreImportRequest $request
-     * @return RedirectResponse
-     */
     public function store(StoreImportRequest $request): RedirectResponse
     {
-        switch($request->step) {
+        switch ($request->step) {
             case 1:
                 session()->forget('import');
                 $path = $request->file('file')->getRealPath();
@@ -56,7 +47,7 @@ class ImportController extends Controller
                 session([
                     'import.table' => $request->table,
                     'import.columns' => $request->columns,
-                    'import.step' => 3
+                    'import.step' => 3,
                 ]);
                 break;
             case 3:
@@ -80,30 +71,27 @@ class ImportController extends Controller
                 }
                 $result = [
                     'count' => count($insertData),
-                    'error' => $errorMsg ?? null
+                    'error' => $errorMsg ?? null,
                 ];
                 session()->forget('import');
                 session([
                     'import.result' => $result,
-                    'import.step' => 4
+                    'import.step' => 4,
                 ]);
                 break;
         }
+
         return redirect()->route('data_bringin.index', ['step' => ++$request->step]);
     }
 
-
-    /**
-     * @param int $id
-     * @return RedirectResponse
-     */
     public function deleteRecord(int $id): RedirectResponse
     {
         try {
-            $data = collect(session('import.data'))->reject(function (array $data) use($id) {
+            $data = collect(session('import.data'))->reject(function (array $data) use ($id) {
                 return $data['Id'] == $id;
             })->values();
             session(['import.data' => $data]);
+
             return redirect()->back()->withSuccess('Record Deleted Successfully.');
         } catch (\Exception $exception) {
             return redirect()->back()->withError($exception->getMessage());

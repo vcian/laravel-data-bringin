@@ -23,7 +23,7 @@ class ImportRequest extends FormRequest
     {
 
         return [
-            'step' => 'integer|between:1,4|nullable'
+            'step' => 'integer|between:1,4|nullable',
         ];
     }
 }
