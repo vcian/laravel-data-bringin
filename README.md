@@ -11,17 +11,25 @@ With this package, you can define your import mappings, which allows you to map 
 
 Require Laravel Dynamic Import using [Composer](https://getcomposer.org):
 
+```bash
+composer require vcian/laravel-data-bringin
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/spatie/.github/blob/main/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-```bash
-composer require vcian/laravel-data-bringin
-```
+## Security
+
+If you discover any security-related issues, please email ruchit.patel@viitor.cloud instead of using the issue tracker.
+
+## Credits
+
+- [All Contributors](../../contributors)
 
 ## License
 
