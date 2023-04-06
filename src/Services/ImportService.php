@@ -3,6 +3,7 @@
 namespace Vcian\LaravelDataBringin\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -10,24 +11,31 @@ use Illuminate\Support\Facades\Schema;
  */
 class ImportService
 {
+    /**
+     * @return Collection
+     */
     public function getTables(): Collection
     {
-        $tables = collect();
-        $db = 'Tables_in_'.env('DB_DATABASE');
-        foreach (Schema::getAllTables() as $table) {
-            $tables->push($table->{$db});
-        }
-
-        return $tables;
+        return collect(Schema::getAllTables())->pluck('Tables_in_'.env('DB_DATABASE'));
     }
 
+    /**
+     * @param string $table
+     * @return Collection
+     */
     public function getTableColumns(string $table): Collection
     {
-        return collect(Schema::getColumnListing($table))->reject(function (string $value) {
-            return in_array($value, ['id', 'deleted_at']);
-        });
+        if (! Schema::hasTable($table)) {
+            return collect();
+        }
+
+        return collect(DB::select("describe {$table}"))->pluck('Field')->diff(['id', 'deleted_at']);
     }
 
+    /**
+     * @param string $fileName
+     * @return array
+     */
     public function csvToArray(string $fileName): array
     {
         // open csv file
