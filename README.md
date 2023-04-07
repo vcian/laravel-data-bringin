@@ -9,11 +9,27 @@ With this package, you can define your import mappings, which allows you to map 
 
 > **Requires [PHP 8.0+](https://php.net/releases/) | [Laravel 8.0+](https://laravel.com/docs/8.x)**
 
-Require Laravel Dynamic Import using [Composer](https://getcomposer.org):
+Require Laravel Data Bringin using [Composer](https://getcomposer.org):
 
 ```bash
 composer require vcian/laravel-data-bringin
 ```
+## Usage:
+
+You can access Data Brigin view via below route
+
+**Access Route:** http://yourdomain.com/data-bringin
+
+**Note:**
+
+Don't forget to replace your actual domain with "yourdomain.com"
+
+You can also update your custom route with config/data-brigin.php
+![img.png](img.png)
+
+
+
+
 
 ## Changelog
 
