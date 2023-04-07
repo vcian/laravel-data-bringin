@@ -130,7 +130,7 @@
                     @csrf
                     <input type="hidden" name="step" value="{{ request()->step ?? 1 }}">
                     <div class="mt-5">
-                        <label for="formFile" class="form-label">Select File</label>
+                        <label for="formFile" class="form-label">Upload CSV File</label>
                         <input class="form-control @error('file') is-invalid @enderror"
                                 type="file"
                                 name="file"
