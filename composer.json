@@ -1,6 +1,6 @@
 {
     "name": "vcian/laravel-data-bringin",
-    "description": "Dynamic import csv file to database through db table column mapping.",
+    "description": "Dynamic import CSV files to a Laravel application database.",
     "keywords": [
         "laravel",
         "import",
@@ -10,7 +10,9 @@
         "csv-import-to-database",
         "database",
         "dynamic",
-        "larage-data-import"
+        "larage-data-import",
+        "csv",
+        "csv data import"
     ],
     "type": "library",
     "license": "MIT",
