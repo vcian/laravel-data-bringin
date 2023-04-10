@@ -107,17 +107,14 @@
             height: 50px;
             background: #e5e5e5;
         }
-        .overflow-scroll {
-            overflow-y: scroll !important;
-            padding: 80px 0px;
-            overflow-x: hidden !important;
-
+        .overflow-scroll-div  {
+            padding: 0 0 50px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="overflow-scroll">
+        <div class="overflow-scroll-div">
             <div class="py-3 d-flex align-items-center justify-content-center">
                 <h2 class="border-bottom pb-2" ><span class="fw-bold">Laravel </span><span class="fw-light">Data Bringin</span></h2>
             </div>
@@ -150,8 +147,10 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="btn-group mt-3" role="group" aria-label="Basic example" style="float: right;">
-                            <button type="submit" class="btn btn-success next-btn">Next</button>
+                        <div class="d-flex w-100 justify-content-end">
+                            <div class="btn-group mt-3" role="group">
+                                <button type="submit" class="btn btn-success next-btn">Next</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -208,9 +207,11 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <div class="btn-group mt-3" role="group" style="float: right;">
-                            <a href="{{ route('data_bringin.index', ['step' => --request()->step]) }}" class="btn btn-success">Prev</a>
-                            <button type="submit" class="btn btn-success next-btn">Next</button>
+                        <div class="d-flex w-100 justify-content-end">
+                            <div class="btn-group mt-3" role="group">
+                                <a href="{{ route('data_bringin.index', ['step' => --request()->step]) }}" class="btn btn-success">Prev</a>
+                                <button type="submit" class="btn btn-success next-btn">Next</button>
+                            </div>
                         </div>
                     </form>
                     @endif
@@ -250,9 +251,11 @@
                     <form method="post" action="{{ route('data_bringin.store') }}">
                         @csrf
                         <input type="hidden" name="step" value="{{ request()->step }}">
-                        <div class="btn-group mt-3" role="group" style="float: right;">
-                            <a href="{{ route('data_bringin.index', ['step' => --request()->step]) }}" class="btn btn-success">Prev</a>
-                            <button type="submit" class="btn btn-success next-btn">Save</button>
+                        <div  class="d-flex w-100 justify-content-end">
+                            <div class="btn-group mt-3" role="group">
+                                <a href="{{ route('data_bringin.index', ['step' => --request()->step]) }}" class="btn btn-success">Prev</a>
+                                <button type="submit" class="btn btn-success next-btn">Save</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -286,9 +289,11 @@
                         </div>
                     </div>
                     @endif
-                    <div class="btn-group mt-3" role="group" aria-label="Basic example" style="float: right;">
-                        <a href="{{ route('data_bringin.index') }}" class="btn btn-success">Continue</a>
-                    </div>
+                        <div  class="d-flex w-100 justify-content-end">
+                            <div class="btn-group mt-3" role="group" aria-label="Basic example">
+                                <a href="{{ route('data_bringin.index') }}" class="btn btn-success">Continue</a>
+                            </div>
+                        </div>
                 </div>
                 @endif
             </div>
