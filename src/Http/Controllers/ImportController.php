@@ -59,7 +59,7 @@ class ImportController extends Controller
                     foreach ($fileData as $data) {
                         $prepareData = [];
                         foreach ($columns as $key => $column) {
-                            $prepareData[$key] = $data[$column];
+                            $prepareData[$key] = $data[$column['name']];
                         }
                         $insertData[] = $prepareData;
                     }

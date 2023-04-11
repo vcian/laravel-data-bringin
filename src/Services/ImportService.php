@@ -22,7 +22,14 @@ class ImportService
             return collect();
         }
 
-        return collect(DB::select("describe {$table}"))->pluck('Field')->diff(['id', 'deleted_at']);
+        return collect(DB::select("describe {$table}"))->map(function ($column) {
+            return [
+                'name' => $column->Field,
+                'required' => $column->Null === 'NO',
+            ];
+        })->reject(function ($column) {
+            return in_array($column['name'], ['id', 'deleted_at']);
+        });
     }
 
     public function csvToArray(string $fileName): array

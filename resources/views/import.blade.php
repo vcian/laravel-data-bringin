@@ -194,12 +194,16 @@
                             <tbody>
                             @foreach($tableColumns as $column)
                             <tr>
-                                <td class="w-50 align-middle text-uppercase">{{ $column }}</td>
+                                <td class="w-50 align-middle text-uppercase">{{ $column['name'] }}
+                                    @if($column['required'])
+                                        <span class="text-danger">*</span>
+                                    @endif
+                                </td>
                                 <td class="w-50">
-                                    <select class="form-select" name="columns[{{$column}}]">
+                                    <select class="form-select" name="columns[{{$column['name']}}]">
                                         <option selected disabled>Select Column</option>
                                         @foreach($fileColumns as $val)
-                                            <option @selected(isset($selectedColumns[$column]) && $selectedColumns[$column] == $val)>{{ $val }}</option>
+                                            <option @selected(isset($selectedColumns[$column['name']]) && $selectedColumns[$column['name']] == $val)>{{ $val }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -227,7 +231,7 @@
                                 <th></th>
                                 <th>id</th>
                                 @foreach($tableColumns as $column)
-                                <th>{{ $column }}</th>
+                                <th>{{ $column['name'] }}</th>
                                 @endforeach
                             </tr>
                             </thead>
@@ -241,7 +245,7 @@
                                 </td>
                                 <td>{{ ++$key }}</td>
                                 @foreach($tableColumns as $column)
-                                <td>{{ (isset($selectedColumns[$column]) && isset($data[$selectedColumns[$column]])) ? $data[$selectedColumns[$column]] : '' }}</td>
+                                <td>{{ (isset($selectedColumns[$column['name']]) && isset($data[$selectedColumns[$column['name']]])) ? $data[$selectedColumns[$column['name']]] : '' }}</td>
                                 @endforeach
                             </tr>
                             @endforeach
