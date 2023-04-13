@@ -37,10 +37,6 @@ class ImportController extends Controller
 
     public function store(StoreImportRequest $request): RedirectResponse
     {
-        if ($request->step > session('import.step')) {
-            return to_route('data_bringin.index');
-        }
-
         switch ($request->step) {
             case 1:
                 session()->forget('import');
@@ -85,7 +81,6 @@ class ImportController extends Controller
                 session(['import.result' => $result]);
                 break;
         }
-
         return to_route('data_bringin.index', ['step' => ++$request->step]);
     }
 
