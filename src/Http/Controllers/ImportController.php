@@ -19,7 +19,7 @@ class ImportController extends Controller
 
     public function index(ImportRequest $request): View|RedirectResponse
     {
-        if ($request->step > session('import.step')) {
+        if ($request->step > session('import.step') && $request->step != 4) {
             return to_route('data_bringin.index');
         }
         $data = [];
@@ -37,6 +37,10 @@ class ImportController extends Controller
 
     public function store(StoreImportRequest $request): RedirectResponse
     {
+        if ($request->step > session('import.step')) {
+            return to_route('data_bringin.index');
+        }
+
         switch ($request->step) {
             case 1:
                 session()->forget('import');
@@ -44,22 +48,26 @@ class ImportController extends Controller
                 session(['import.data' => $this->importService->csvToArray($path), 'import.step' => 2]);
                 break;
             case 2:
+                $columns = collect($request->columns)->filter();
+                if(!$columns->count()) {
+                    return redirect()->back();
+                }
                 session([
                     'import.table' => $request->table,
-                    'import.columns' => $request->columns,
+                    'import.columns' => $columns,
                     'import.step' => 3,
                 ]);
                 break;
             case 3:
                 $fileData = collect(session('import.data'));
                 $table = session('import.table');
-                $columns = collect(session('import.columns'));
+                $columns = session('import.columns');
                 $insertData = [];
                 try {
                     foreach ($fileData as $data) {
                         $prepareData = [];
                         foreach ($columns as $key => $column) {
-                            $prepareData[$key] = $data[$column['name']];
+                            $prepareData[$key] = $data[$column];
                         }
                         $insertData[] = $prepareData;
                     }
@@ -74,14 +82,11 @@ class ImportController extends Controller
                     'error' => $errorMsg ?? null,
                 ];
                 session()->forget('import');
-                session([
-                    'import.result' => $result,
-                    'import.step' => 4,
-                ]);
+                session(['import.result' => $result]);
                 break;
         }
 
-        return redirect()->route('data_bringin.index', ['step' => ++$request->step]);
+        return to_route('data_bringin.index', ['step' => ++$request->step]);
     }
 
     public function deleteRecord(int $id): RedirectResponse

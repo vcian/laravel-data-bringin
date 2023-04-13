@@ -201,9 +201,9 @@
                                 </td>
                                 <td class="w-50">
                                     <select class="form-select" name="columns[{{$column['name']}}]">
-                                        <option selected disabled>Select Column</option>
+                                        <option selected value=''>Select Column</option>
                                         @foreach($fileColumns as $val)
-                                            <option @selected(isset($selectedColumns[$column['name']]) && $selectedColumns[$column['name']] == $val)>{{ $val }}</option>
+                                            <option @selected(isset($selectedColumns[$column['name']]) && $selectedColumns[$column['name']] == $val && $selectedTable == session('import.table'))>{{ $val }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -231,7 +231,9 @@
                                 <th></th>
                                 <th>id</th>
                                 @foreach($tableColumns as $column)
-                                <th>{{ $column['name'] }}</th>
+                                    @if(isset($selectedColumns[$column['name']]))
+                                    <th>{{ $column['name'] }}</th>
+                                    @endif
                                 @endforeach
                             </tr>
                             </thead>
@@ -245,7 +247,9 @@
                                 </td>
                                 <td>{{ ++$key }}</td>
                                 @foreach($tableColumns as $column)
-                                <td>{{ (isset($selectedColumns[$column['name']]) && isset($data[$selectedColumns[$column['name']]])) ? $data[$selectedColumns[$column['name']]] : '' }}</td>
+                                    @if(isset($selectedColumns[$column['name']]))
+                                    <td>{{ $data[$selectedColumns[$column['name']]] ?? '' }}</td>
+                                    @endif
                                 @endforeach
                             </tr>
                             @endforeach
