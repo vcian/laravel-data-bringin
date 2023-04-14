@@ -20,14 +20,23 @@ You can access Data Brigin view via below route
 
 **Access Route:** http://yourdomain.com/data-bringin
 
+![img_1.png](img_1.png)
+
 **Note:**
 
-Don't forget to replace your actual domain with "yourdomain.com"
+1) Don't forget to replace your actual domain with "yourdomain.com"
 
-You can also update your custom route with config/data-brigin.php
+2) You can also update your custom route with config/data-brigin.php
 ![img.png](img.png)
 
+3) By default, data-bringin support import data upto **10,000** records.
+If you want to upgrade more capacity than you have to make changes in php.ini file below parameter values. 
 
+
+    max_execution_time
+    post_max_size
+    memory_limit
+    max_input_vars
 
 
 
