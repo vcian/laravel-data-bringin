@@ -30,6 +30,9 @@ class StoreImportRequest extends FormRequest
             $rules['file'] = 'required|file|mimes:csv,txt';
         }
 
+        if ($this->step == 2) {
+            $rules['table'] = 'required';
+        }
         return $rules;
     }
 }

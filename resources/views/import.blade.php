@@ -819,6 +819,10 @@
             z-index: 999;
         }
 
+        .select.is-invalid {
+            border-color: #dc3545 !important;
+        }
+
         @media only screen and (min-width: 1600px) {
             .container {
                 max-width: 1600px;
@@ -837,8 +841,8 @@
         <div class="wizard-inner">
             <div class="connecting-line"></div>
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" @class(['active' => !isset(request()->step)])>
-                    <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab">
+                <li role="presentation" @class(['active' => (request()->step ?? 1) == 1])>
+                    <a data-toggle="tab" aria-controls="step1" role="tab">
                         <span class="number"><i class="fa fa-upload"></i></span>
                         <span class="desc">
                             <span class="name">Upload CSV</span>
@@ -847,8 +851,8 @@
                         <span class="count-step">1</span>
                     </a>
                 </li>
-                <li role="presentation" @class(['active' => request()->step == 2,'disabled' => request()->step < 2])>
-                    <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab">
+                <li role="presentation" @class(['active' => request()->step == 2, 'disabled' => request()->step < 2])>
+                    <a data-toggle="tab" aria-controls="step2" role="tab">
                         <span class="number"><i class="fa fa-object-group"></i></span>
                         <span class="desc">
                             <span class="name">Mapping</span>
@@ -858,8 +862,8 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    @class(['active' => request()->step == 3 ,'disabled' => request()->step < 3]) class="disabled">
-                    <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab">
+                    @class(['active' => request()->step == 3, 'disabled' => request()->step < 3]) class="disabled">
+                    <a data-toggle="tab" aria-controls="step3" role="tab">
                         <span class="number"><i class="fa fa-gear"></i></span>
                         <span class="desc">
                             <span class="name">Manage</span>
@@ -868,9 +872,8 @@
                         <span class="count-step">3</span>
                     </a>
                 </li>
-
                 <li role="presentation" @class(['disabled' => request()->step < 4]) class="disabled">
-                    <a href="#summarydata" data-toggle="tab" aria-controls="summarydata" role="tab">
+                    <a data-toggle="tab" aria-controls="summarydata" role="tab">
                         <span class="number"><i class="fa fa-file-excel-o"></i></span>
                         <span class="desc">
                             <span class="name">Result</span>
@@ -888,7 +891,7 @@
         <div class="form-horizontal">
             <div class="tab-content">
                 <div
-                    @class(['active' => request()->step == 1 || !isset(request()->step),'tab-pane','first-step']) role="tabpanel"
+                    @class(['active' => (request()->step ?? 1) == 1, 'tab-pane', 'first-step']) role="tabpanel"
                     id="step1">
                     <form method="post" action="{{ route('data_bringin.store') }}" enctype="multipart/form-data">
                         @csrf
@@ -934,7 +937,7 @@
                     </form>
                 </div>
                 @if(request()->step == 2)
-                    <div @class(['active' => request()->step == 2,'tab-pane']) role="tabpanel" id="step2">
+                    <div @class(['active' => request()->step == 2, 'tab-pane']) role="tabpanel" id="step2">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="note wizard-cus-note">
@@ -955,7 +958,7 @@
                                         <input type="hidden" name="step" value="{{ request()->step }}">
                                         <div class="select-dropdown tab-content imported_data table_header">
                                             <label>Select Database Table</label>
-                                            <select class="select" name="table" onchange="this.form.submit()">
+                                            <select class="select @error('table') is-invalid @enderror" name="table" onchange="this.form.submit()">
                                                 <option selected disabled>Select Table</option>
                                                 @foreach($tables as $table)
                                                     <option @selected($table == $selectedTable)>
@@ -963,6 +966,9 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            @error('table')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </form>
@@ -970,6 +976,8 @@
                         </div>
                         <form method="post" action="{{ route('data_bringin.store') }}">
                             @csrf
+                            <input type="hidden" name="step" value="{{ request()->step }}">
+                            <input type="hidden" name="table" value="{{ $selectedTable }}">
                             <div class="form-group mapping-step">
                                 <div class="col-md-12 col-sm-12">
                                     @if($selectedTable)
@@ -981,8 +989,6 @@
                                                     <div id="mCSB_1_container" class="mCSB_container"
                                                          style="position: relative; top: 0px; left: 0px; width: 771px; min-width: 100%; overflow-x: inherit;"
                                                          dir="ltr">
-                                                        <input type="hidden" name="step" value="{{ request()->step }}">
-                                                        <input type="hidden" name="table" value="{{ $selectedTable }}">
                                                         <table
                                                             class="table imported_data maping-table table table-striped table-bordered table-hover manage-taskTbl dataTable"
                                                             role="grid" aria-describedby="sample_1_info">
@@ -992,30 +998,29 @@
                                                                 <th>CSV File Column</th>
                                                             </tr>
                                                             @foreach($tableColumns as $column)
-                                                                <tr>
-                                                                    <th>
-                                                                        {{ $column['name'] }}
-                                                                        @if($column['required'])
-                                                                            <span class="text-danger">*</span>
-                                                                        @endif
-                                                                    </th>
-                                                                    <th>
-                                                                        <div class="select-dropdown">
-                                                                            <select class="firstname-class" style="0"
-                                                                                    name="columns[{{$column['name']}}]">
-                                                                                <option selected value=''>Select
-                                                                                    Column
-                                                                                </option>
-                                                                                @foreach($fileColumns as $val)
-                                                                                    <option @selected(isset($selectedColumns[$column['name']]) && $selectedColumns[$column['name']] == $val && $selectedTable == session('import.table'))>{{ $val }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                    </th>
-                                                                </tr>
+                                                            <tr>
+                                                                <th>
+                                                                    {{ $column['name'] }}
+                                                                    @if($column['required'])
+                                                                        <span class="text-danger">*</span>
+                                                                    @endif
+                                                                </th>
+                                                                <th>
+                                                                    <div class="select-dropdown">
+                                                                        <select class="firstname-class"
+                                                                                name="columns[{{$column['name']}}]">
+                                                                            <option selected value=''>Select
+                                                                                Column
+                                                                            </option>
+                                                                            @foreach($fileColumns as $val)
+                                                                                <option @selected(isset($selectedColumns[$column['name']]) && $selectedColumns[$column['name']] == $val && $selectedTable == session('import.table'))>{{ $val }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
                                                             @endforeach
                                                             </thead>
-                                                            <tbody></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -1045,7 +1050,7 @@
                     </div>
                 @endif
                 @if(request()->step == 3)
-                    <div @class(['active' => request()->step == 3,'tab-pane']) role="tabpanel" id="step3">
+                    <div @class(['active' => request()->step == 3, 'tab-pane']) role="tabpanel" id="step3">
                         <form method="post" action="{{ route('data_bringin.store') }}">
                             @csrf
                             <input type="hidden" name="step" value="{{ request()->step }}">
@@ -1109,7 +1114,6 @@
                                                 <a href="{{ route('data_bringin.index', ['step' => --request()->step]) }}"
                                                    class="btn btn-default prev-step">Previous</a>
                                             </li>
-
                                             <li>
                                                 <button type="submit"
                                                         class="btn btn-primary btn-info-full next-step continue-step3">
@@ -1144,7 +1148,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-actions">
@@ -1164,7 +1167,7 @@
     </div>
 </div>
 <footer class="d-flex align-items-center justify-content-between w-100 position-fixed bottom-0 left-0 px-3">
-    <p class="m-0">Laravel Data Bringin - version 1.0.0</p>
+    <p class="m-0">Laravel Data Bringin - version {{ \Composer\InstalledVersions::getVersion('vcian/laravel-data-bringin') }}</p>
     <p class="m-0">Created by <a href="https://viitorcloud.com/" class="text-decoration-none" target="_blank">ViitorCloud</a>
     </p>
 </footer>
