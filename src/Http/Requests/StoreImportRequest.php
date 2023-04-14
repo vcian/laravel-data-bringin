@@ -3,6 +3,7 @@
 namespace Vcian\LaravelDataBringin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreImportRequest extends FormRequest
 {

@@ -1,5 +1,8 @@
 # Laravel Data Bringin
 
+[![Packagist](https://img.shields.io/packagist/l/vcian/laravel-data-bringin?style=for-the-badge)](https://packagist.org/packages/vcian/laravel-data-bringin)
+[![Total Downloads](https://img.shields.io/packagist/dt/vcian/laravel-data-bringin?style=for-the-badge)](https://packagist.org/packages/vcian/laravel-data-bringin)
+
 ## Introduction
 
 This package provides an easy and flexible way to import  CSV files to a Laravel application's database.

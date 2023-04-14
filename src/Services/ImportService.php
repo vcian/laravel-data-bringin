@@ -11,31 +11,27 @@ use Illuminate\Support\Facades\Schema;
  */
 class ImportService
 {
-    /**
-     * @return Collection
-     */
     public function getTables(): Collection
     {
         return collect(Schema::getAllTables())->pluck('Tables_in_'.env('DB_DATABASE'));
     }
 
-    /**
-     * @param string $table
-     * @return Collection
-     */
     public function getTableColumns(string $table): Collection
     {
         if (! Schema::hasTable($table)) {
             return collect();
         }
 
-        return collect(DB::select("describe {$table}"))->pluck('Field')->diff(['id', 'deleted_at']);
+        return collect(DB::select("describe {$table}"))->map(function ($column) {
+            return [
+                'name' => $column->Field,
+                'required' => $column->Null === 'NO',
+            ];
+        })->reject(function ($column) {
+            return in_array($column['name'], ['id', 'deleted_at']);
+        });
     }
 
-    /**
-     * @param string $fileName
-     * @return array
-     */
     public function csvToArray(string $fileName): array
     {
         // open csv file
