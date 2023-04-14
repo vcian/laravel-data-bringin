@@ -3,9 +3,9 @@
 [![Packagist](https://img.shields.io/packagist/l/vcian/laravel-data-bringin?style=for-the-badge)](https://packagist.org/packages/vcian/laravel-data-bringin)
 [![Total Downloads](https://img.shields.io/packagist/dt/vcian/laravel-data-bringin?style=for-the-badge)](https://packagist.org/packages/vcian/laravel-data-bringin)
 
-## Introduction
+## What It Does
 
-This package provides an easy and flexible way to import  CSV files to a Laravel application's database.
+This package provides an easy and flexible way to import any kind of dynamic CSV files to a Laravel application's database.
 With this package, you can define your import mappings, which allows you to map columns in your CSV files to specific fields in your database tables.
 
 ## Installation & Usage
@@ -33,13 +33,13 @@ You can access Data Brigin view via below route
 ![img.png](img.png)
 
 3) By default, data-bringin support import data upto **10,000** records.
-If you want to upgrade more capacity than you have to make changes in php.ini file below parameter values. 
-
-
-    max_execution_time
-    post_max_size
-    memory_limit
-    max_input_vars
+If you want to upgrade more capacity than you have to make changes in php.ini file below parameter values.
+```bash
+max_execution_time
+post_max_size
+memory_limit
+max_input_vars
+```
 
 
 
