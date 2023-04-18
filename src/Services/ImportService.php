@@ -22,7 +22,7 @@ class ImportService
             return collect();
         }
 
-        return collect(DB::select("describe {$table}"))->map(function ($column) {
+        return collect(DB::select("describe `{$table}`"))->map(function ($column) {
             return [
                 'name' => $column->Field,
                 'required' => $column->Null === 'NO',
